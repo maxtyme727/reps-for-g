@@ -38,9 +38,10 @@ const App: React.FC = () => {
       setSelectedRecipe(recipe);
       saveRecipe(recipe);
       setActiveScreen('recipe-detail');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Extraction failed:", error);
-      alert("Failed to extract recipe. Please check the URL and try again.");
+      const message = error instanceof Error ? error.message : "Failed to extract recipe. Please check the URL and try again.";
+      alert(message);
     } finally {
       setIsLoading(false);
     }
