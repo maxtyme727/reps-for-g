@@ -176,7 +176,7 @@ const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipe, onUpdat
           </button>
         </div>
         
-        <div className="flex items-center gap-4 mt-3 text-sm text-zinc-400">
+        <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-zinc-400">
           <div className="flex items-center gap-1">
             <span className="material-symbols-outlined text-primary text-sm">schedule</span>
             <span>{recipe.prepTime}</span>
@@ -188,6 +188,19 @@ const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipe, onUpdat
           <div className="flex items-center gap-1">
             <span className="material-symbols-outlined text-primary text-sm">star</span>
             <span>{recipe.rating}</span>
+          </div>
+          <div className="flex items-center gap-1 relative group">
+            <span className="material-symbols-outlined text-primary text-sm">calendar_month</span>
+            <input
+              type="date"
+              value={new Date(recipe.timestamp).toISOString().split('T')[0]}
+              onChange={(e) => {
+                if (e.target.value) {
+                  onUpdateRecipe({ ...recipe, timestamp: new Date(e.target.value).getTime() });
+                }
+              }}
+              className="bg-transparent border-none text-zinc-400 text-sm focus:ring-0 p-0 cursor-pointer w-[110px]"
+            />
           </div>
         </div>
       </div>
@@ -252,7 +265,7 @@ const RecipeDetailScreen: React.FC<RecipeDetailScreenProps> = ({ recipe, onUpdat
       ) : (
         <div className="p-4 space-y-6 mt-4">
           <h3 className="text-lg font-bold mb-4">Preparation Steps</h3>
-          {recipe.steps.sort((a,b) => a.order - b.order).map((step, idx, arr) => (
+          {[...recipe.steps].sort((a,b) => a.order - b.order).map((step, idx, arr) => (
             <div key={idx} className="flex gap-4 group">
               <div className="flex flex-col items-center">
                 <div className="size-8 rounded-full bg-primary flex items-center justify-center text-sm font-bold shrink-0">
